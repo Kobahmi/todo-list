@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@600&family=Nunito&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="style.css"/>
+    <script defer src="main.js"></script>
+</head>
+<body>
+    <div id="content">
+        <header class="header">
+            <h1>ToDo List</h1>
+            <button class="menu-button" type="checkbox">
+                <img class="menu-svg" src="./icons/menu.svg" alt="menu">
+            </button>
+        </header>
+
+        <main class="main">
+            <div class="side">
+                <div class="time-container">
+                    <button class="time" id="all-button">
+                        <img class="icon-img" id="annoying" src="./icons/all.svg" alt="all">
+                        <p>All</p>
+                    </button>
+
+                    <button class="time" id="day-button">
+                        <img class="icon-img" src="./icons/day.svg" alt="day">
+                        <p>Day</p>
+                    </button>
+
+                    <button class="time" id="week-button">
+                        <img class="icon-img" src="./icons/week.svg" alt="week">
+                        <p>Week</p>
+                    </button>
+                </div>
+
+
+                <div class="project-container">
+                    <h2>Projects</h2>
+                    
+                    <button class="add-project" id="add-project">
+                        <img class="icon-img" src="./icons/add.svg" alt="add">
+                        <p>Add Project</p>
+                    </button>
+                    <div class="added-projects">
+                        <div class="project-button">
+                            <button class="select-project">
+                                <img src="./icons/tasks.svg" alt="tasks">
+                                <p>Test</p>
+                            </button>
+                            <button class="delete-project"><p>X</p></button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            
+            <div class="todo-container">
+
+            </div>
+
+        </main>
+
+
+        <dialog class="modal-one">
+            <form class="form-one" method="dialog">
+                <div class="form-header">
+                    <button type="button" class="close-modal-one closee"><p>X</p></button>
+                    <h1>Add Project</h1>
+                </div>
+
+                <div class="project-input-container">
+                    <div class="project-input">
+                        <label for="project">Project Name</label>
+                        <input type="text" id="project-name" class="project-name" name="title" required>
+                    </div>
+
+                    <div class="button-container">
+                        <button class="form-one-add-project" type="submit">Add</button>
+                        <button type="button" class="closee">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </dialog>
+        
+        
+
+        <dialog class="modal-two">
+            <form class="form-two" method="dialog">
+                <div class="form-two-header">
+                    <button type="button" class="close-modal-two closeee">X</button>
+                    <h1>Add Task</h1>
+                </div>
+
+
+                <div class="form-two-task">
+                    <div class="form-two-input">
+                        <label for="task">Task Name</label>
+                        <input type="text" id="task-name" class="task-name" name="task_name" required>
+                    </div>
+
+                    <div class="form-two-date">
+                        <label for="date">Due Date</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+
+                    <div class="form-two-priority">
+                        <label for="priority">Priority</label>
+                        <select class="task-priority" name="priority">
+                            <option value="" disabled selected>Task importance</option>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="form-two-button">
+                    <button class="form-two-add-task" type="submit">Add</button>
+                    <button class="closeee" type="button">Cancel</button>
+                </div>
+            </form>
+        </dialog>
+    </div>
+</body>
+</html>
