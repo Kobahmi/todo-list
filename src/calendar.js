@@ -1,4 +1,7 @@
-import { compareAsc, format } from 'date-fns'
+import { isSameDay, isSameWeek, format, parseISO } from 'date-fns'
+
+
+
 let myProjects = [];
 let myTasks = [];
 
@@ -45,13 +48,6 @@ const makeProject = (() => {
     const modalTwo = document.querySelector(".modal-two")
 
 
-
-
-    
-    
-
-
-
     const createProject = (newProject) => {  //creates the project display and controls
         const addedProjects = document.querySelector(".added-projects")
         
@@ -79,14 +75,11 @@ const makeProject = (() => {
         addedProjects.appendChild(projectCard)
 
 
-
-
         modalOne.close()
-        projectText.innerHTML = newProject.title;
+        projectText.innerHTML = newProject.title; //project name display
 
      
-
-        projectCardDelete.addEventListener("click", () => {
+        projectCardDelete.addEventListener("click", () => { //deletes both array and display
             projectCard.remove();
             
             let index = 0;
@@ -101,12 +94,12 @@ const makeProject = (() => {
         //make select-project button display myProject Tasks HEEEERE
 
         projectCardButton.addEventListener("click", () => {
-            calendarControl.renderProject(newProject.title)
+            calendarControl.renderProject(newProject.title)  //puts project name in header
 
 
         })
-
-
+    
+    
     }
 
 
@@ -122,8 +115,8 @@ const makeProject = (() => {
     formOne.addEventListener("submit", (e) => {
         e.preventDefault();
         let newProject = new Project(formOneInput.value);
-        addProjectToArray(newProject)
-        createProject(newProject);
+        addProjectToArray(newProject)  //puts in array
+        createProject(newProject);  //create display
         console.log(myProjects)
 
         })
@@ -132,8 +125,7 @@ const makeProject = (() => {
 
     //TASKs UGHHHHHH
     const addTaskToArray = (task) => {  //adds task to array
-        
-        myTasks.push(task);
+                myTasks.push(task);
 
     }
 
@@ -147,7 +139,9 @@ const makeProject = (() => {
             let newTask = new Task(taskNameInput.value, dateInput.value, priorityInput.value)
             addTaskToArray(newTask)
             createTask(newTask);
+            calendarControl.renderAll()
             console.log(myTasks)
+            
         })
     }
 
@@ -261,7 +255,7 @@ const calendarControl = (() => {
 
     const todo = document.createElement("div")
     todo.classList.add("todo")
-    const todoText = document.createElement("p")
+
 
     const addTaskButton = document.createElement("button")
     addTaskButton.classList.add("add-task")
@@ -273,28 +267,108 @@ const calendarControl = (() => {
     const addText = document.createElement("p")
     addText.textContent = "Add Task"
 
+
+    //fix here
+
+
+
+
     todoTitle.appendChild(titleText)
     todoTitle.appendChild(todo)
     addTaskButton.appendChild(addIcon)
     addTaskButton.appendChild(addText)
-    todo.appendChild(todoText)
+
+
     todoContainer.appendChild(todoTitle)
     todoContainer.appendChild(addTaskButton)
     todoContainer.appendChild(todo)
   
 
 
-    const projectCard = document.querySelectorAll(".project-button")
-    const todoCard = document.querySelectorAll(".todo-card") //HERE put all cards filtered
+    function removeAllChildNodes(parent) {
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+        }
+    }
+
+
+
+
     
     const renderAll = () => {
         allBtn.addEventListener("click", () => {
+
             titleText.textContent = "All Tasks";
-            todoText.textContent = "TEST BLA";
+            if (allBtn.classList.contains("activate")) return;
+            removeAllChildNodes(todo)
+            setActivate(allBtn)
+
+            for (let i=0; i < myTasks.length; i++) {
+
+
+                const todoCard = document.createElement("div")
+                todoCard.classList.add("todo-card")
+                const todoCardText = document.createElement("p")
+                todoCardText.classList.add("todo-card-text")
+                const todoCardDeleteBtn = document.createElement("button")
+                todoCardDeleteBtn.classList.add("todo-card-delete")
+                const todoCardDeleteBtnText = document.createElement("p")
+                todoCardDeleteBtnText.textContent = "X"
+                const spanOne = document.createElement("span")
+                const spanTwo = document.createElement("span")
+                const spanThree = document.createElement("span")
+            
+                todoCardDeleteBtn.appendChild(todoCardDeleteBtnText)
+                todoCardText.appendChild(spanOne)
+                todoCardText.appendChild(spanTwo)
+                todoCardText.appendChild(spanThree)
+                todoCard.appendChild(todoCardText)
+                todoCard.appendChild(todoCardDeleteBtn)
+                todo.appendChild(todoCard)
+
+                const priorityColor = (value) => {
+                    if (value === "low") {
+                        todoCard.classList.add("color-add-low")
+            
+                    }
+            
+                    if (value === "medium") {
+                        todoCard.classList.add("color-add-medium")
+                    }
+            
+                    if (value === "high") {
+                        todoCard.classList.add("color-add-high")
+                    }
+            
+                }
+
+            spanOne.textContent = myTasks[i].name;
+            spanTwo.textContent = myTasks[i].date;
+            spanThree.textContent = priorityColor(myTasks[i].priority);
+
+
+            todoCardDeleteBtn.addEventListener("click", () => {
+                todoCard.remove(); //delete in display
+                
+                let index = 0; //delete in array
+                myTasks.forEach(task => {
+                    if (task.name === myTasks[i].name && task.date === myTasks[i].date)
+                    myTasks.splice(index, 1);
+                    index++;
+                })
+            })
+            
+
+        }
+        setActivate(allBtn)
+
+
+
 
         })
         titleText.textContent = "All Tasks";
-        todoText.textContent = "No tasks!";
+        setActivate(allBtn)
+ 
 
     }
 
@@ -302,11 +376,76 @@ const calendarControl = (() => {
 
     const renderDay = () => {
         dayBtn.addEventListener("click", () => {
+
             titleText.textContent = "Today's Tasks";
-            todoText.textContent = "TEST BLABLA";
+            if (dayBtn.classList.contains("activate")) return;
+            removeAllChildNodes(todo)
+            setActivate(dayBtn)
+
+            for (let i=0; i < myTasks.length; i++) {
+                if (format(new Date(), "yyyy-MM-dd") === myTasks[i].date) {
+
+                const todoCard = document.createElement("div")
+                todoCard.classList.add("todo-card")
+                const todoCardText = document.createElement("p")
+                todoCardText.classList.add("todo-card-text")
+                const todoCardDeleteBtn = document.createElement("button")
+                todoCardDeleteBtn.classList.add("todo-card-delete")
+                const todoCardDeleteBtnText = document.createElement("p")
+                todoCardDeleteBtnText.textContent = "X"
+                const spanOne = document.createElement("span")
+                const spanTwo = document.createElement("span")
+                const spanThree = document.createElement("span")
+            
+                todoCardDeleteBtn.appendChild(todoCardDeleteBtnText)
+                todoCardText.appendChild(spanOne)
+                todoCardText.appendChild(spanTwo)
+                todoCardText.appendChild(spanThree)
+                todoCard.appendChild(todoCardText)
+                todoCard.appendChild(todoCardDeleteBtn)
+                todo.appendChild(todoCard)
+
+                const priorityColor = (value) => {
+                    if (value === "low") {
+                        todoCard.classList.add("color-add-low")
+            
+                    }
+            
+                    if (value === "medium") {
+                        todoCard.classList.add("color-add-medium")
+                    }
+            
+                    if (value === "high") {
+                        todoCard.classList.add("color-add-high")
+                    }
+            
+                }
+
+            spanOne.textContent = myTasks[i].name;
+            spanTwo.textContent = myTasks[i].date;
+            spanThree.textContent = priorityColor(myTasks[i].priority);
+        
+
+
+            todoCardDeleteBtn.addEventListener("click", () => {
+                todoCard.remove(); //delete in display
+                
+                let index = 0; //delete in array
+                myTasks.forEach(task => {
+                    if (task.name === myTasks[i].name && task.date === myTasks[i].date)
+                    myTasks.splice(index, 1);
+                    index++;
+                })
+            })
+            
+
+        }
+        setActivate(dayBtn)
+
+    }
+
 
         })
-
 
 
 
@@ -315,8 +454,73 @@ const calendarControl = (() => {
 
     const renderWeek = () => {
         weekBtn.addEventListener("click", () => {
-            titleText.textContent = "Week Tasks";
-            todoText.textContent = "TEST BLABLAaaaaaaaa";
+
+            titleText.textContent = "Week's Tasks";
+            if (weekBtn.classList.contains("activate")) return;
+            removeAllChildNodes(todo)
+            setActivate(weekBtn)
+
+            for (let i=0; i < myTasks.length; i++) {
+                if (isSameWeek(parseISO(format(new Date(), "yyyy-MM-dd")), parseISO(myTasks[i].date)) === true) {
+
+                const todoCard = document.createElement("div")
+                todoCard.classList.add("todo-card")
+                const todoCardText = document.createElement("p")
+                todoCardText.classList.add("todo-card-text")
+                const todoCardDeleteBtn = document.createElement("button")
+                todoCardDeleteBtn.classList.add("todo-card-delete")
+                const todoCardDeleteBtnText = document.createElement("p")
+                todoCardDeleteBtnText.textContent = "X"
+                const spanOne = document.createElement("span")
+                const spanTwo = document.createElement("span")
+                const spanThree = document.createElement("span")
+            
+                todoCardDeleteBtn.appendChild(todoCardDeleteBtnText)
+                todoCardText.appendChild(spanOne)
+                todoCardText.appendChild(spanTwo)
+                todoCardText.appendChild(spanThree)
+                todoCard.appendChild(todoCardText)
+                todoCard.appendChild(todoCardDeleteBtn)
+                todo.appendChild(todoCard)
+
+                const priorityColor = (value) => {
+                    if (value === "low") {
+                        todoCard.classList.add("color-add-low")
+            
+                    }
+            
+                    if (value === "medium") {
+                        todoCard.classList.add("color-add-medium")
+                    }
+            
+                    if (value === "high") {
+                        todoCard.classList.add("color-add-high")
+                    }
+            
+                }
+
+            spanOne.textContent = myTasks[i].name;
+            spanTwo.textContent = myTasks[i].date;
+            spanThree.textContent = priorityColor(myTasks[i].priority);
+
+
+            todoCardDeleteBtn.addEventListener("click", () => {
+                todoCard.remove(); //delete in display
+                
+                let index = 0; //delete in array
+                myTasks.forEach(task => {
+                    if (task.name === myTasks[i].name)
+                    myTasks.splice(index, 1);
+                    index++;
+                })
+            })
+            
+
+        }
+
+
+    }
+
 
         })
 
@@ -326,7 +530,20 @@ const calendarControl = (() => {
     const renderProject = (project) => {
         
         titleText.textContent = `${project}`
-        todoText.textContent = "TESTTTTT"
+
+        
+    }
+
+
+    const setActivate = (button) => {
+        const navBtn = document.querySelectorAll(".time")
+
+        navBtn.forEach(button => {
+            button.classList.remove("activate")
+
+
+        })
+        button.classList.add("activate")
     }
 
 
