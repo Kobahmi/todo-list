@@ -111,7 +111,7 @@ button:hover {
 .project-container {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
     font-family: var(--content-font-family);
     font-size: var(--content-font-size);
     color: var(--font-color);
@@ -421,6 +421,7 @@ button:hover {
 
 .project-button:hover {
     border: 3px solid var(--font-color);
+    border-radius: 15px;
 }
 
 
@@ -440,8 +441,9 @@ button:hover {
     background-color: var(--background-pink);
     scale: 100%;
     color: var(--font-color);
-
 }
+
+
 
 .select-project img {
     width: 2rem;
