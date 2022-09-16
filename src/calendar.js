@@ -30,11 +30,9 @@ class ProjectTask {
     }
 }
 
-//PLAN: 1.make the clickable projects have an "active" classlist.
-//2. make the tasks only add if project contains "activate"
-//2.5 filter all/day/week/project  MAYBE CAN FILTER PROJECTS? BY INPUTTING PROJECT IN TASK AND COMPARING
-//3. every project displays their own "ALL Tasks" header and appends their own child.
-//4. remember restaurant page. each their own page.
+//Bugs to fix: 1 Remove Task btn from day and week
+//2 Week filter function doesnt work. only shows 1-2 days in advance. Maybe just change it to "tomorrow"
+//3 render projects and connect them to tasks by filtering inputs
 
 
 
@@ -57,6 +55,7 @@ const makeProject = (() => {
 
         const projectCardButton = document.createElement("button")
         projectCardButton.classList.add("select-project")
+        projectCardButton.classList.add("time")
         
         const projectImg = document.createElement("img")
         projectImg.setAttribute("src", "./icons/tasks.svg")
@@ -95,7 +94,7 @@ const makeProject = (() => {
 
         projectCardButton.addEventListener("click", () => {
             calendarControl.renderProject(newProject.title)  //puts project name in header
-
+            calendarControl.setActivate(projectCardButton)
 
         })
     
@@ -139,7 +138,7 @@ const makeProject = (() => {
             let newTask = new Task(taskNameInput.value, dateInput.value, priorityInput.value)
             addTaskToArray(newTask)
             createTask(newTask);
-            calendarControl.renderAll()
+            calendarControl.renderAll()  //make if statement for project
             console.log(myTasks)
             
         })
@@ -196,7 +195,7 @@ const makeProject = (() => {
         const spanThree = document.createElement("span")
   
         spanOne.textContent = newTask.name
-        spanTwo.textContent = format(new Date(newTask.date), "yyyy-MM-dd") 
+        spanTwo.textContent = newTask.date
         spanThree.textContent = priorityColor(newTask.priority)
 
         todoCardText.appendChild(spanOne)
@@ -528,8 +527,11 @@ const calendarControl = (() => {
 
 
     const renderProject = (project) => {
-        
-        titleText.textContent = `${project}`
+        const projectBtn = document.querySelectorAll(".project-button")
+
+
+        titleText.textContent = `${project}`;
+            
 
         
     }
@@ -598,7 +600,7 @@ const calendarControl = (() => {
 
 
 
-return {renderAll, renderDay, renderWeek, renderProject, addTask, addProject, closeModalOne, closeModalTwo}
+return {renderAll, renderDay, renderWeek, renderProject, addTask, addProject, closeModalOne, closeModalTwo, setActivate}
 })();
 
 
