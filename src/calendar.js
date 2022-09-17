@@ -2,6 +2,7 @@ import { isSameDay, isSameWeek, format, parseISO } from 'date-fns'
 
 
 
+
 let myProjects = [];
 let myTasks = [];
 
@@ -26,13 +27,13 @@ class ProjectTask {
         this.name = name;
         this.date = date;
         this.priority = priority;
-        this.project = project;
+        this.project = project;  //make something like this
     }
 }
-
-//Bugs to fix: 1 Remove Task btn from day and week
-//2 Week filter function doesnt work. only shows 1-2 days in advance. Maybe just change it to "tomorrow"
-//3 render projects and connect them to tasks by filtering inputs
+//WHEN YOU COME BACK:
+//1 Remove Task btn from day and week ?
+//2 Add localStorage
+//3 render projects and connect them to tasks by filtering inputs and making it choose ALL or a project
 
 
 
@@ -138,7 +139,8 @@ const makeProject = (() => {
             let newTask = new Task(taskNameInput.value, dateInput.value, priorityInput.value)
             addTaskToArray(newTask)
             createTask(newTask);
-            calendarControl.renderAll()  //make if statement for project
+
+  //make if statement for project
             console.log(myTasks)
             
         })
@@ -348,7 +350,7 @@ const calendarControl = (() => {
 
             todoCardDeleteBtn.addEventListener("click", () => {
                 todoCard.remove(); //delete in display
-                
+                //IDK MAN TRY DOC SELECT ALL OR
                 let index = 0; //delete in array
                 myTasks.forEach(task => {
                     if (task.name === myTasks[i].name && task.date === myTasks[i].date)
@@ -560,7 +562,8 @@ const calendarControl = (() => {
         addTaskButton.addEventListener("click", () => { 
             taskNameInput.value = "";
             dateInput.value = "";
-            priorityInput.value = ""
+            priorityInput.value = "";
+            calendarControl.renderAll()
             modalTwo.showModal()
         })
     }
