@@ -112,10 +112,6 @@ button:hover {
   width: clamp(10rem, 20rem, 50rem);
 }
 
-.project-container h2 {
-  border-bottom: 4px solid var(--font-color);
-}
-
 .add-project {
   font-family: var(--content-font-family);
   font-size: var(--content-font-size);
@@ -141,6 +137,7 @@ button:hover {
   border-radius: 10px;
   display: flex;
   align-items: center;
+  height: 8rem;
 }
 
 .todo {
