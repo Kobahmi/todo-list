@@ -496,4 +496,8 @@ button:hover {
   #add-project {
     width: 100%;
   }
+
+  .todo {
+    font-size: clamp(0.5rem, 1rem, 5rem);
+  }
 }

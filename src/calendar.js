@@ -1,14 +1,6 @@
-import { isSameDay, isSameWeek, format, parseISO } from "date-fns";
+import { isSameWeek, format, parseISO } from "date-fns";
 
-const myProjects = [];
 const myTasks = JSON.parse(localStorage.getItem("task.lists")) || [];
-
-class Project {
-  constructor(title) {
-    this.title = title;
-    this.tasks = [];
-  }
-}
 
 class Task {
   constructor(name, date, priority) {
@@ -18,92 +10,15 @@ class Task {
   }
 }
 
-// WHEN YOU COME BACK:
-// 1 Remove Task btn from day and week ?
-// 2 Add localStorage
-// 3 render projects and connect them to tasks by filtering inputs and making it choose ALL or a project
-
 const save = () => {
   localStorage.setItem("task.lists", JSON.stringify(myTasks));
 };
 
 const makeProject = (() => {
-  const formOne = document.querySelector(".form-one");
   const formTwo = document.querySelector(".form-two");
-  const formOneInput = document.querySelector("#project-name");
-  const modalOne = document.querySelector(".modal-one");
   const modalTwo = document.querySelector(".modal-two");
 
-  /* const createProject = (newProject) => {
-    // creates the project display and controls
-    const addedProjects = document.querySelector(".added-projects");
-
-    const projectCard = document.createElement("div");
-    projectCard.classList.add("project-button");
-    addedProjects.appendChild(projectCard);
-
-    const projectCardButton = document.createElement("button");
-    projectCardButton.classList.add("select-project");
-    projectCardButton.classList.add("time");
-
-    const projectImg = document.createElement("img");
-    projectImg.setAttribute("src", "./icons/tasks.svg");
-    const projectText = document.createElement("p");
-
-    const projectCardDelete = document.createElement("button");
-    projectCardDelete.classList.add("delete-project");
-    const projectDeleteIcon = document.createElement("p");
-    projectDeleteIcon.textContent = "X";
-
-    projectCardDelete.appendChild(projectDeleteIcon);
-    projectCardButton.appendChild(projectImg);
-    projectCardButton.appendChild(projectText);
-    projectCard.appendChild(projectCardButton);
-    projectCard.appendChild(projectCardDelete);
-    addedProjects.appendChild(projectCard);
-
-    modalOne.close();
-    projectText.innerHTML = newProject.title; // project name display
-
-    projectCardDelete.addEventListener("click", () => {
-      // deletes both array and display
-      projectCard.remove();
-
-      let index = 0;
-      myProjects.forEach((project) => {
-        if (project.title === newProject.title) myProjects.splice(index, 1);
-        index++;
-      });
-    });
-
-    // make select-project button display myProject Tasks HEEEERE
-
-    projectCardButton.addEventListener("click", () => {
-      calendarControl.renderProject(newProject.title); // puts project name in header
-      calendarControl.setActivate(projectCardButton);
-    });
-  };
-
-  const addProjectToArray = (project) => {
-    // adds project to array
-    myProjects.push(project);
-  };
-
-  const addProjectToDisplay = () => {
-    // adds project inputs to display
-    formOne.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const newProject = new Project(formOneInput.value);
-      addProjectToArray(newProject); // puts in array
-      createProject(newProject); // create display
-      save();
-      console.log(myProjects);
-    });
-  };
-*/
-  // TASKs UGHHHHHH
   const addTaskToArray = (task) => {
-    // adds task to array
     myTasks.push(task);
   };
 
@@ -124,7 +39,6 @@ const makeProject = (() => {
       createTask(newTask);
       save();
 
-      // make if statement for project
       console.log(myTasks);
     });
   };
@@ -149,7 +63,6 @@ const makeProject = (() => {
     todoCard.appendChild(todoCardDeleteBtn);
     todoContainer.appendChild(todoCard);
 
-    // close modal two
     modalTwo.close();
 
     // make card priority color
@@ -186,15 +99,13 @@ const makeProject = (() => {
       let index = 0; // delete in array
       myTasks.forEach((task) => {
         if (task.name === newTask.name) myTasks.splice(index, 1);
-        index++;
+        index += 1;
         save();
       });
     });
-
-    // PUSH TASK INTO THE RIGHT PROJECT
   };
 
-  return { /* addProjectToDisplay, */ addTaskToDisplay };
+  return { addTaskToDisplay };
 })();
 
 const calendarControl = (() => {
@@ -224,8 +135,6 @@ const calendarControl = (() => {
   addIcon.setAttribute("alt", "add");
   const addText = document.createElement("p");
   addText.textContent = "Add Task";
-
-  // fix here
 
   todoTitle.appendChild(titleText);
   todoTitle.appendChild(todo);
@@ -292,12 +201,12 @@ const calendarControl = (() => {
 
         todoCardDeleteBtn.addEventListener("click", () => {
           todoCard.remove(); // delete in display
-          // IDK MAN TRY DOC SELECT ALL OR
+
           let index = 0; // delete in array
           myTasks.forEach((task) => {
             if (task.name === myTasks[i].name && task.date === myTasks[i].date)
               myTasks.splice(index, 1);
-            index++;
+            index += 1;
             save();
           });
         });
@@ -369,7 +278,7 @@ const calendarControl = (() => {
                 task.date === myTasks[i].date
               )
                 myTasks.splice(index, 1);
-              index++;
+              index += 1;
               save();
             });
           });
@@ -442,19 +351,13 @@ const calendarControl = (() => {
             let index = 0; // delete in array
             myTasks.forEach((task) => {
               if (task.name === myTasks[i].name) myTasks.splice(index, 1);
-              index++;
+              index += 1;
               save();
             });
           });
         }
       }
     });
-  };
-
-  const renderProject = (project) => {
-    const projectBtn = document.querySelectorAll(".project-button");
-
-    titleText.textContent = `${project}`;
   };
 
   const setActivate = (button) => {
@@ -509,7 +412,6 @@ const calendarControl = (() => {
     renderAll,
     renderDay,
     renderWeek,
-    renderProject,
     addTask,
     addProject,
     closeModalOne,
@@ -523,11 +425,8 @@ const initiateControls = () => {
   calendarControl.renderDay();
   calendarControl.renderWeek();
   calendarControl.addTask();
-  /* calendarControl.addProject(); */
   calendarControl.closeModalOne();
   calendarControl.closeModalTwo();
-  /* makeProject.addProjectToDisplay(); */
-
   makeProject.addTaskToDisplay();
 };
 
