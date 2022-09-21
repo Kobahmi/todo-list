@@ -34,7 +34,7 @@ const makeProject = (() => {
   const modalOne = document.querySelector(".modal-one");
   const modalTwo = document.querySelector(".modal-two");
 
-  const createProject = (newProject) => {
+  /* const createProject = (newProject) => {
     // creates the project display and controls
     const addedProjects = document.querySelector(".added-projects");
 
@@ -100,7 +100,7 @@ const makeProject = (() => {
       console.log(myProjects);
     });
   };
-
+*/
   // TASKs UGHHHHHH
   const addTaskToArray = (task) => {
     // adds task to array
@@ -194,7 +194,7 @@ const makeProject = (() => {
     // PUSH TASK INTO THE RIGHT PROJECT
   };
 
-  return { addProjectToDisplay, addTaskToDisplay };
+  return { /* addProjectToDisplay, */ addTaskToDisplay };
 })();
 
 const calendarControl = (() => {
@@ -523,10 +523,10 @@ const initiateControls = () => {
   calendarControl.renderDay();
   calendarControl.renderWeek();
   calendarControl.addTask();
-  calendarControl.addProject();
+  /* calendarControl.addProject(); */
   calendarControl.closeModalOne();
   calendarControl.closeModalTwo();
-  makeProject.addProjectToDisplay();
+  /* makeProject.addProjectToDisplay(); */
 
   makeProject.addTaskToDisplay();
 };
