@@ -38,8 +38,6 @@ const makeProject = (() => {
       addTaskToArray(newTask);
       createTask(newTask);
       save();
-
-      console.log(myTasks);
     });
   };
 
@@ -158,7 +156,7 @@ const calendarControl = (() => {
       clearElement(todo);
       setActivate(allBtn);
 
-      for (let i = 0; i < myTasks.length; i++) {
+      myTasks.forEach((task) => {
         const todoCard = document.createElement("div");
         todoCard.classList.add("todo-card");
         const todoCardText = document.createElement("p");
@@ -195,22 +193,16 @@ const calendarControl = (() => {
           }
         };
 
-        spanOne.textContent = myTasks[i].name;
-        spanTwo.textContent = myTasks[i].date;
-        spanThree.textContent = priorityColor(myTasks[i].priority);
+        spanOne.textContent = task.name;
+        spanTwo.textContent = task.date;
+        spanThree.textContent = priorityColor(task.priority);
 
         todoCardDeleteBtn.addEventListener("click", () => {
           todoCard.remove(); // delete in display
-
-          let index = 0; // delete in array
-          myTasks.forEach((task) => {
-            if (task.name === myTasks[i].name && task.date === myTasks[i].date)
-              myTasks.splice(index, 1);
-            index += 1;
-            save();
-          });
+          myTasks.splice(myTasks.indexOf(task), 1);
+          save();
         });
-      }
+      });
       setActivate(allBtn);
     });
     titleText.textContent = "Welcome";
@@ -226,8 +218,8 @@ const calendarControl = (() => {
       clearElement(todo);
       setActivate(dayBtn);
 
-      for (let i = 0; i < myTasks.length; i++) {
-        if (format(new Date(), "yyyy-MM-dd") === myTasks[i].date) {
+      myTasks.forEach((task) => {
+        if (format(new Date(), "yyyy-MM-dd") === task.date) {
           const todoCard = document.createElement("div");
           todoCard.classList.add("todo-card");
           const todoCardText = document.createElement("p");
@@ -264,27 +256,18 @@ const calendarControl = (() => {
             }
           };
 
-          spanOne.textContent = myTasks[i].name;
-          spanTwo.textContent = myTasks[i].date;
-          spanThree.textContent = priorityColor(myTasks[i].priority);
+          spanOne.textContent = task.name;
+          spanTwo.textContent = task.date;
+          spanThree.textContent = priorityColor(task.priority);
 
           todoCardDeleteBtn.addEventListener("click", () => {
             todoCard.remove(); // delete in display
-
-            let index = 0; // delete in array
-            myTasks.forEach((task) => {
-              if (
-                task.name === myTasks[i].name &&
-                task.date === myTasks[i].date
-              )
-                myTasks.splice(index, 1);
-              index += 1;
-              save();
-            });
+            myTasks.splice(myTasks.indexOf(task), 1);
+            save();
           });
         }
         setActivate(dayBtn);
-      }
+      });
     });
   };
 
@@ -298,11 +281,11 @@ const calendarControl = (() => {
       clearElement(todo);
       setActivate(weekBtn);
 
-      for (let i = 0; i < myTasks.length; i++) {
+      myTasks.forEach((task) => {
         if (
           isSameWeek(
             parseISO(format(new Date(), "yyyy-MM-dd")),
-            parseISO(myTasks[i].date)
+            parseISO(task.date)
           ) === true
         ) {
           const todoCard = document.createElement("div");
@@ -341,22 +324,17 @@ const calendarControl = (() => {
             }
           };
 
-          spanOne.textContent = myTasks[i].name;
-          spanTwo.textContent = myTasks[i].date;
-          spanThree.textContent = priorityColor(myTasks[i].priority);
+          spanOne.textContent = task.name;
+          spanTwo.textContent = task.date;
+          spanThree.textContent = priorityColor(task.priority);
 
           todoCardDeleteBtn.addEventListener("click", () => {
             todoCard.remove(); // delete in display
-
-            let index = 0; // delete in array
-            myTasks.forEach((task) => {
-              if (task.name === myTasks[i].name) myTasks.splice(index, 1);
-              index += 1;
-              save();
-            });
+            myTasks.splice(myTasks.indexOf(task), 1);
+            save();
           });
         }
-      }
+      });
     });
   };
 
@@ -378,7 +356,6 @@ const calendarControl = (() => {
       taskNameInput.value = "";
       dateInput.value = "";
       priorityInput.value = "";
-      calendarControl.renderAll();
       modalTwo.showModal();
     });
   };
